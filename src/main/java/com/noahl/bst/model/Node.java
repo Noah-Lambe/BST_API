@@ -16,7 +16,6 @@ public class Node {
         this.right = null;
     }
 
-    // Getters and Setters
     public int getData() { return data; }
     public void setData(int data) { this.data = data; }
     public Node getLeft() { return left; }

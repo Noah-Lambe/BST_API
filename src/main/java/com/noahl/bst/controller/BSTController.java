@@ -2,7 +2,10 @@ package com.noahl.bst.controller;
 
 import com.noahl.bst.model.*;
 import com.noahl.bst.service.BSTService;
+import com.noahl.bst.service.PreviousTreesService;
+import com.noahl.bst.service.ProcessNumbersService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,6 +16,12 @@ public class BSTController {
 
     @Autowired
     private BSTService bstService;
+
+    @Autowired
+    private ProcessNumbersService processNumbersService;
+
+    @Autowired
+    private PreviousTreesService previousTreesService;
 
     @PostMapping("/insert/{value}")
     public ResponseEntity<TreeResponse> insert(@PathVariable int value) {
@@ -98,6 +107,19 @@ public class BSTController {
         Node tree = bstService.getRoot();
         TreeResponse response = createTreeResponse(tree, "Sample tree built successfully", true);
         return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/process-numbers")
+    public ResponseEntity<ProcessNumbersResponse> processNumbers(@RequestBody ProcessNumbersRequest request) {
+        ProcessNumbersResponse res = processNumbersService.process(request.getNumbers());
+        return res.isSuccess() ? ResponseEntity.ok(res) : ResponseEntity.badRequest().body(res);
+    }
+
+    @GetMapping("/previous-trees")
+    public ResponseEntity<Page<PreviousTree>> previousTrees(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        return ResponseEntity.ok(previousTreesService.list(page, size));
     }
 
     private TreeResponse createTreeResponse(Node tree, String message, boolean success) {

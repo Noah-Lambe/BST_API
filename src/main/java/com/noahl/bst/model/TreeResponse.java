@@ -12,7 +12,6 @@ public class TreeResponse {
     private Integer max;
     private int size;
 
-    // Constructors
     public TreeResponse() {}
 
     public TreeResponse(Node tree, String message, boolean success) {
@@ -21,7 +20,6 @@ public class TreeResponse {
         this.success = success;
     }
 
-    // Getters and Setters
     public Node getTree() { return tree; }
     public void setTree(Node tree) { this.tree = tree; }
     public List<Integer> getTraversal() { return traversal; }
